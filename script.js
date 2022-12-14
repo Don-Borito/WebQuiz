@@ -7,7 +7,7 @@ const answerButtonsElement = document.getElementById("answer-buttons");
 const answerField = document.getElementById("answer");
 const points = document.getElementById("points");
 
-let shuffledQuestions, currentQuestionIndex, pointsCounter;
+let currentQuestionIndex, pointsCounter;
 
 startButton.addEventListener("click", startGame);
 nextButton.addEventListener("click", () => {
@@ -19,7 +19,6 @@ function startGame() {
   startButton.classList.add("hide");
   pointsCounter = 0;
   points.innerHTML = "Points = " + pointsCounter;
-  shuffledQuestions = questions.sort(() => Math.random() - 0.5);
   currentQuestionIndex = 0;
   questionContainerElement.classList.remove("hide");
   setNextQuestion();
@@ -27,12 +26,12 @@ function startGame() {
 
 function setNextQuestion() {
   resetState();
-  showQuestion(shuffledQuestions[currentQuestionIndex]);
+  showQuestion(questions[currentQuestionIndex]);
 }
 
 function showQuestion(question) {
   questionElement.innerText = question.question;
-  if (question.isNotMultipleChoise) {
+  if (question.isNotMultipleChoice) {
     question.answers.forEach((answer) => {
       const button = document.createElement("button");
       button.innerText = answer.text;
@@ -73,7 +72,7 @@ function submitAnswer(e) {
     pointsCounter += 1;
     points.innerHTML = "Points = " + pointsCounter;
   }
-  if (shuffledQuestions.length > currentQuestionIndex + 1) {
+  if (questions.length > currentQuestionIndex + 1) {
     nextButton.classList.remove("hide", "correct", "wrong");
     submitButton.classList.add("hide");
     if (correct) {
@@ -103,7 +102,7 @@ function selectAnswer(e) {
   Array.from(answerButtonsElement.children).forEach((button) => {
     setColor(button, button.dataset.correct);
   });
-  if (shuffledQuestions.length > currentQuestionIndex + 1) {
+  if (questions.length > currentQuestionIndex + 1) {
     nextButton.classList.remove("hide", "correct", "wrong");
     if (correct) {
       setColor(nextButton, correct);
@@ -132,15 +131,17 @@ function setColor(element, correct) {
 
 const questions = [
   {
-    isNotMultipleChoise: true,
-    question: "Was ist 2 + 2?",
+    s: true,
+    question: "Ist Nike oder Adidas besser?",
     answers: [
-      { text: "4", correct: true },
-      { text: "22", correct: false },
+      { text: "Nike", correct: false },
+      { text: "Trage keine Markenkleider", correct: true },
+      { text: "Jeder was er mag", correct: true },
+      { text: "Adidas", correct: false },
     ],
   },
   {
-    isNotMultipleChoise: true,
+    s: true,
     question: "Wo ist die BBB?",
     answers: [
       { text: "Luzern", correct: false },
@@ -154,7 +155,7 @@ const questions = [
     answers: { text: ["q", "Q"] },
   },
   {
-    isNotMultipleChoise: true,
+    s: true,
     question: "Welcher Grosse Fluss fliesst durch Äypten?",
     answers: [
       { text: "Nil", correct: true },
@@ -168,7 +169,7 @@ const questions = [
     answers: { text: ["h2o", "H2o", "H2O", "h2O"] },
   },
   {
-    question: "Was ist 4 * 2?",
-    answers: { text: ["8"] },
+    question: "Was macht Kinder froh?",
+    answers: { text: ["Haribo", "haribo"] },
   },
 ];
